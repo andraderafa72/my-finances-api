@@ -19,6 +19,6 @@ router.get('/transactions/deposit/:id?', LoginRequired, transactionController.ge
 router.post('/transactions/withdraw/create', LoginRequired, transactionController.createWithdraw);
 router.get('/transactions/withdraw/:id?', LoginRequired, transactionController.getWithdraws);
 
-router.get('/transactions/index/:id?', LoginRequired, transactionController.getTransactions);
+router.get('/transactions/:id?', LoginRequired, transactionController.getTransactions);
 router.patch('/transactions/update/:id', LoginRequired, transactionController.updateTransaction);
 router.delete('/transactions/delete/:id', LoginRequired, transactionController.getTransactions);
