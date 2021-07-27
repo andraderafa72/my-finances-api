@@ -1,8 +1,11 @@
-import { connect } from "mongoose";
+import mongoose from "mongoose";
 
 export default async (): Promise<void> => {
   try {
-    await connect(process.env.DATABASE_URL, { useUnifiedTopology: true });
+    await mongoose.connect(process.env.DATABASE_URL, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    } as any);
   } catch (error) {
     throw new Error(error);
   }
