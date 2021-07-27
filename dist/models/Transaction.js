@@ -47,6 +47,7 @@ var schema = new mongoose_1.Schema({
     type: { type: String, required: true },
     category: { type: String, required: true },
     user: { type: String, required: true },
+    createdAt: { type: Date, required: true, default: new Date() },
 });
 var TransactionModel = mongoose_1.model('Transaction', schema);
 var Transaction = /** @class */ (function () {

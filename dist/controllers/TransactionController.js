@@ -62,20 +62,24 @@ var HandleError_1 = require("../errors/HandleError");
 var TransactionController = /** @class */ (function () {
     function TransactionController() {
     }
-    TransactionController.prototype.createDeposit = function (request, response) {
+    TransactionController.prototype.createTransaction = function (request, response) {
         var _a;
         return __awaiter(this, void 0, void 0, function () {
-            var _b, title, amount, category, userId, schema, error_1, transactionModel;
+            var _b, title, amount, category, type, userId, schema, error_1, transactionModel;
             return __generator(this, function (_c) {
                 switch (_c.label) {
                     case 0:
-                        _b = request.body, title = _b.title, amount = _b.amount, category = _b.category;
+                        _b = request.body, title = _b.title, amount = _b.amount, category = _b.category, type = _b.type;
                         userId = (_a = request.user) === null || _a === void 0 ? void 0 : _a.id;
                         schema = yup.object().shape({
                             title: yup.string().required(),
                             amount: yup.number().required(),
                             category: yup.string().required(),
+                            type: yup.string().required(),
                         });
+                        if (type !== 'deposit' && type !== 'withdraw') {
+                            return [2 /*return*/, response.status(400).json(HandleError_1.HandleError('Invalid body!'))];
+                        }
                         _c.label = 1;
                     case 1:
                         _c.trys.push([1, 3, , 4]);
@@ -90,7 +94,7 @@ var TransactionController = /** @class */ (function () {
                         transactionModel = new Transaction_1.Transaction({
                             title: title,
                             amount: amount,
-                            type: 'deposit',
+                            type: type,
                             category: category,
                             user: userId,
                         });
@@ -101,49 +105,6 @@ var TransactionController = /** @class */ (function () {
                             return [2 /*return*/, response.status(400).json(HandleError_1.HandleError(transactionModel.errors))];
                         }
                         return [2 /*return*/, response.json({ status: 'Created Successfully!', transaction: transactionModel.transaction })];
-                }
-            });
-        });
-    };
-    TransactionController.prototype.createWithdraw = function (request, response) {
-        var _a;
-        return __awaiter(this, void 0, void 0, function () {
-            var userId, _b, title, amount, category, schema, error_2, transactionModel;
-            return __generator(this, function (_c) {
-                switch (_c.label) {
-                    case 0:
-                        userId = (_a = request.user) === null || _a === void 0 ? void 0 : _a.id;
-                        _b = request.body, title = _b.title, amount = _b.amount, category = _b.category;
-                        schema = yup.object().shape({
-                            title: yup.string().required(),
-                            amount: yup.number().required(),
-                            category: yup.string().required(),
-                        });
-                        _c.label = 1;
-                    case 1:
-                        _c.trys.push([1, 3, , 4]);
-                        return [4 /*yield*/, schema.validate(request.body, { abortEarly: false })];
-                    case 2:
-                        _c.sent();
-                        return [3 /*break*/, 4];
-                    case 3:
-                        error_2 = _c.sent();
-                        return [2 /*return*/, response.status(400).json(HandleError_1.HandleError(error_2.errors))];
-                    case 4:
-                        transactionModel = new Transaction_1.Transaction({
-                            title: title,
-                            amount: amount,
-                            type: 'withdraw',
-                            category: category,
-                            user: userId,
-                        });
-                        return [4 /*yield*/, transactionModel.createTransaction()];
-                    case 5:
-                        _c.sent();
-                        if (transactionModel.errors.length > 0) {
-                            return [2 /*return*/, response.status(400).json(HandleError_1.HandleError(transactionModel.errors))];
-                        }
-                        return [2 /*return*/, response.json({ status: 'Created!', transaction: transactionModel.transaction })];
                 }
             });
         });
@@ -229,7 +190,7 @@ var TransactionController = /** @class */ (function () {
     TransactionController.prototype.updateTransaction = function (request, response) {
         var _a;
         return __awaiter(this, void 0, void 0, function () {
-            var _b, title, amount, category, type, id, userId, schema, error_3;
+            var _b, title, amount, category, type, id, userId, schema, error_2;
             return __generator(this, function (_c) {
                 switch (_c.label) {
                     case 0:
@@ -253,8 +214,8 @@ var TransactionController = /** @class */ (function () {
                         _c.sent();
                         return [3 /*break*/, 4];
                     case 3:
-                        error_3 = _c.sent();
-                        return [2 /*return*/, response.status(400).json(HandleError_1.HandleError(error_3.errors))];
+                        error_2 = _c.sent();
+                        return [2 /*return*/, response.status(400).json(HandleError_1.HandleError(error_2.errors))];
                     case 4: return [4 /*yield*/, Transaction_1.Transaction.updateTransaction(id, {
                             title: title,
                             amount: amount,

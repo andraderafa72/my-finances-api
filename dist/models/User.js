@@ -40,6 +40,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.User = exports.UserModel = void 0;
+/* eslint-disable no-empty-function */
+/* eslint-disable no-unused-vars */
 var mongoose_1 = require("mongoose");
 var bcryptjs_1 = __importDefault(require("bcryptjs"));
 var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
@@ -47,7 +49,8 @@ var schema = new mongoose_1.Schema({
     name: { type: String, required: true },
     email: { type: String, required: true },
     password: { type: String, required: true },
-    transactions: Array
+    transactions: Array,
+    createdAt: { type: Date, required: true, default: new Date() },
 });
 exports.UserModel = mongoose_1.model('User', schema);
 var User = /** @class */ (function () {
@@ -77,7 +80,7 @@ var User = /** @class */ (function () {
             });
         });
     };
-    User.prototype.userExists = function (isAuth) {
+    User.prototype.userExists = function () {
         return __awaiter(this, void 0, void 0, function () {
             var exists;
             return __generator(this, function (_a) {
@@ -85,7 +88,6 @@ var User = /** @class */ (function () {
                     case 0: return [4 /*yield*/, exports.UserModel.findOne({ email: this.user.email })];
                     case 1:
                         exists = _a.sent();
-                        console.log(exists);
                         if (exists)
                             this.errors.push('User already exists!');
                         return [2 /*return*/];
@@ -111,11 +113,12 @@ var User = /** @class */ (function () {
                             return [2 /*return*/, 'no-auth'];
                         }
                         token = jsonwebtoken_1.default.sign({
+                            // eslint-disable-next-line no-underscore-dangle
                             userId: user._id,
                             userEmail: user.email,
-                            userName: user.name
+                            userName: user.name,
                         }, process.env.TOKEN_SECRET, {
-                            expiresIn: process.env.TOKEN_EXPIRATION
+                            expiresIn: process.env.TOKEN_EXPIRATION,
                         });
                         return [2 /*return*/, token];
                 }

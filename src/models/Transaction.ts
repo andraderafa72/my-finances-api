@@ -12,6 +12,7 @@ const schema = new Schema<TransactionProps>({
   type: { type: String, required: true },
   category: { type: String, required: true },
   user: { type: String, required: true },
+  createdAt: { type: Date, required: true, default: new Date() },
 });
 
 const TransactionModel = model<TransactionProps>('Transaction', schema);

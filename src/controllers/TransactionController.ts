@@ -6,16 +6,21 @@ import { HandleError } from '../errors/HandleError';
 import { TransactionProps } from "../types/TransactionProps";
 
 export class TransactionController {
-  async createDeposit(request: RequestProps, response: Response) {
-    const { title, amount, category } = request.body;
+  async createTransaction(request: RequestProps, response: Response) {
+    const {
+      title, amount, category, type,
+    } = request.body;
     const userId = request.user?.id;
 
     const schema = yup.object().shape({
       title: yup.string().required(),
       amount: yup.number().required(),
       category: yup.string().required(),
+      type: yup.string().required(),
     });
-
+    if (type !== 'deposit' && type !== 'withdraw') {
+      return response.status(400).json(HandleError('Invalid body!'));
+    }
     try {
       await schema.validate(request.body, { abortEarly: false });
     } catch (error) {
@@ -25,7 +30,7 @@ export class TransactionController {
     const transactionModel = new TransactionModel({
       title,
       amount,
-      type: 'deposit',
+      type,
       category,
       user: userId,
     });
@@ -36,38 +41,6 @@ export class TransactionController {
     }
 
     return response.json({ status: 'Created Successfully!', transaction: transactionModel.transaction });
-  }
-
-  async createWithdraw(request: RequestProps, response: Response) {
-    const userId = request.user?.id;
-    const { title, amount, category } = request.body;
-
-    const schema = yup.object().shape({
-      title: yup.string().required(),
-      amount: yup.number().required(),
-      category: yup.string().required(),
-    });
-
-    try {
-      await schema.validate(request.body, { abortEarly: false });
-    } catch (error) {
-      return response.status(400).json(HandleError(error.errors));
-    }
-
-    const transactionModel = new TransactionModel({
-      title,
-      amount,
-      type: 'withdraw',
-      category,
-      user: userId,
-    });
-
-    await transactionModel.createTransaction();
-    if (transactionModel.errors.length > 0) {
-      return response.status(400).json(HandleError(transactionModel.errors));
-    }
-
-    return response.json({ status: 'Created!', transaction: transactionModel.transaction });
   }
 
   async getWithdraws(request: RequestProps, response: Response) {
