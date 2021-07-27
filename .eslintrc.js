@@ -21,6 +21,7 @@ module.exports = {
     'import/no-unresolved': 'off',
     'import/extensions': 'off',
     'consistent-return': 'off',
+    'no-console': 'off',
     quotes: 'off',
   },
 };

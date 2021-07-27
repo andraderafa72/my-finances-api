@@ -1,11 +1,11 @@
 import { Response } from "express";
-import { RequestProps } from '../types/RequestProps';
 import * as yup from 'yup';
+import { RequestProps } from '../types/RequestProps';
 import { User as UserModel } from '../models/User';
 import { HandleError } from '../errors/HandleError';
 
-export class TokenController{
-  async create(request: RequestProps, response: Response){
+export class TokenController {
+  async create(request: RequestProps, response: Response) {
     const { email, password } = request.body;
 
     const schema = yup.object().shape({
@@ -19,11 +19,11 @@ export class TokenController{
       return response.status(400).json(HandleError(error.errors));
     }
 
-    const userModel = new UserModel({name: '', email, password});
+    const userModel = new UserModel({ name: '', email, password });
 
-    const token = await userModel.auth()
-    if(userModel.errors.length > 0){
-      return response.status(400).json(HandleError(userModel.errors))
+    const token = await userModel.auth();
+    if (userModel.errors.length > 0) {
+      return response.status(400).json(HandleError(userModel.errors));
     }
 
     return response.json({ status: 'Authenticated!', token });

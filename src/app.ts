@@ -1,3 +1,4 @@
+/* eslint-disable import/first */
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -9,7 +10,6 @@ import cors from 'cors';
 import helmet from 'helmet';
 import { router } from './routes';
 import createClient from './database';
-
 
 createClient().then(() => {
   console.log('Conexão com o banco de dados estabelecida!');

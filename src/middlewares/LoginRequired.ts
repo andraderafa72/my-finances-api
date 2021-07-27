@@ -11,10 +11,17 @@ export default async (
 ): Promise<any> => {
   const { authorization } = request.headers;
 
+  if (!authorization) {
+    return response.status(401).json(HandleError('Login required!'));
+  }
+
   const [, token] = authorization.split(' ');
+  if (!token) {
+    return response.status(401).json(HandleError('Login required!'));
+  }
 
   try {
-    const data = jwt.verify(token, process.env.TOKEN_SECRET);
+    const data: any = jwt.verify(token, process.env.TOKEN_SECRET);
     const { userId, userName, userEmail } = data;
 
     const userExists = await UserModel.findOne({ email: userEmail });
