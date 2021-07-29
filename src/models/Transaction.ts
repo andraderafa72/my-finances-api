@@ -21,18 +21,18 @@ export class Transaction {
   constructor(
     public transaction: TransactionProps,
     public errors: string[] = [],
-  ) {}
+  ) { }
 
   async createTransaction(): Promise<void> {
     await TransactionModel.create(this.transaction);
   }
 
   static async deleteTransaction(transactionId: string): Promise<void> {
-    await TransactionModel.findOneAndDelete({ _id: transactionId });
+    await TransactionModel.findOneAndDelete({ _id: new ObjectId(transactionId) });
   }
 
   static async updateTransaction(transactionId: string, transactionData: TransactionProps) {
-    await TransactionModel.findOneAndUpdate({ _id: transactionId }, transactionData);
+    await TransactionModel.findOneAndUpdate({ _id: new ObjectId(transactionId) }, transactionData);
   }
 
   static async getWithdrawTransactions(

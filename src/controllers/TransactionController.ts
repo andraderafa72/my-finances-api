@@ -4,6 +4,7 @@ import { RequestProps } from '../types/RequestProps';
 import { Transaction as TransactionModel } from '../models/Transaction';
 import { HandleError } from '../errors/HandleError';
 import { TransactionProps } from "../types/TransactionProps";
+import { UserModel } from "../models/User";
 
 export class TransactionController {
   async createTransaction(request: RequestProps, response: Response) {
@@ -40,7 +41,7 @@ export class TransactionController {
       return response.status(400).json(HandleError(transactionModel.errors));
     }
 
-    return response.json({ status: 'Created Successfully!', transaction: transactionModel.transaction });
+    return response.json({ status: 'Created Successfully!', transaction: { ...transactionModel.transaction, createdAt: new Date() } });
   }
 
   async getWithdraws(request: RequestProps, response: Response) {
@@ -85,9 +86,17 @@ export class TransactionController {
 
   async deleteTransaction(request: RequestProps, response: Response) {
     const { id } = request.params;
+    try {
+      const user = await UserModel.findOne({ email: request.user.email });
 
-    await TransactionModel.deleteTransaction(id);
-    return response.json({ status: 'Deleted Successfully!' });
+      user.transactions.splice(user.transactions.indexOf(id), 1);
+
+      user.save((e) => console.log(e || ''));
+      await TransactionModel.deleteTransaction(id);
+      return response.json({ status: 'Deleted Successfully!' });
+    } catch (error) {
+      return response.status(400).json(HandleError(error.errors));
+    }
   }
 
   async updateTransaction(request: RequestProps, response: Response) {

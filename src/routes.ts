@@ -20,4 +20,4 @@ router.get('/transactions/withdraw/:id?', LoginRequired, transactionController.g
 router.get('/transactions/deposit/:id?', LoginRequired, transactionController.getDeposits);
 
 router.patch('/transactions/update/:id', LoginRequired, transactionController.updateTransaction);
-router.delete('/transactions/delete/:id', LoginRequired, transactionController.getTransactions);
+router.delete('/transactions/delete/:id', LoginRequired, transactionController.deleteTransaction);
