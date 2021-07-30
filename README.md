@@ -157,6 +157,8 @@ Agora que você criou seu usuário e guardou seu token, para criar uma transaç�
 }
 ```
 
+<br>
+
 ## 💰 Listar transações
 
 - Método: `GET` 
@@ -187,6 +189,8 @@ Agora que você criou seu usuário e guardou seu token, para criar uma transaç�
   ]
 }
 ```
+
+<br>
 
 ## 💰 Listar Transação
 - Método: `GET` 
