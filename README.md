@@ -48,11 +48,11 @@ Agora você pode conectar a API pelo endereço: [`localhost:3334`](http://localh
 ✔️ API rodando em produção
 
 <ul>
-  <li><a href="#-registro-de-usuario">Registro de usuário</a> </li>
-  <li><a href="#-autenticaçao-com-token">Autenticação</a> </li>
+  <li><a href="#-registro-de-usuário">Registro de usuário</a> </li>
+  <li><a href="#-autenticação-com-token">Autenticação</a> </li>
   <li><a href="#-como-executar">Cadastro de transação</a> </li>
-  <li><a href="#-listar-transaçoes">Listar Transações</a></li>
-  <li><a href="#-listar-transaçao">Listar Transação</a></li>
+  <li><a href="#-listar-transações">Listar Transações</a></li>
+  <li><a href="#-listar-transação">Listar Transação</a></li>
 </ul>
 
 Link para API em produção: [`https://myfinances-web.herokuapp.com`](https://myfinances-web.herokuapp.com) <br>
