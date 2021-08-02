@@ -20,4 +20,4 @@ exports.router.get('/transactions/:id?', LoginRequired_1.default, transactionCon
 exports.router.get('/transactions/withdraw/:id?', LoginRequired_1.default, transactionController.getWithdraws);
 exports.router.get('/transactions/deposit/:id?', LoginRequired_1.default, transactionController.getDeposits);
 exports.router.patch('/transactions/update/:id', LoginRequired_1.default, transactionController.updateTransaction);
-exports.router.delete('/transactions/delete/:id', LoginRequired_1.default, transactionController.getTransactions);
+exports.router.delete('/transactions/delete/:id', LoginRequired_1.default, transactionController.deleteTransaction);

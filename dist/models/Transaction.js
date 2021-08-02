@@ -58,12 +58,13 @@ var Transaction = /** @class */ (function () {
     }
     Transaction.prototype.createTransaction = function () {
         return __awaiter(this, void 0, void 0, function () {
+            var transaction;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, TransactionModel.create(this.transaction)];
                     case 1:
-                        _a.sent();
-                        return [2 /*return*/];
+                        transaction = _a.sent();
+                        return [2 /*return*/, transaction];
                 }
             });
         });
@@ -72,7 +73,7 @@ var Transaction = /** @class */ (function () {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, TransactionModel.findOneAndDelete({ _id: transactionId })];
+                    case 0: return [4 /*yield*/, TransactionModel.findOneAndDelete({ _id: new mongodb_1.ObjectId(transactionId) })];
                     case 1:
                         _a.sent();
                         return [2 /*return*/];
@@ -84,7 +85,7 @@ var Transaction = /** @class */ (function () {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, TransactionModel.findOneAndUpdate({ _id: transactionId }, transactionData)];
+                    case 0: return [4 /*yield*/, TransactionModel.findOneAndUpdate({ _id: new mongodb_1.ObjectId(transactionId) }, transactionData)];
                     case 1:
                         _a.sent();
                         return [2 /*return*/];

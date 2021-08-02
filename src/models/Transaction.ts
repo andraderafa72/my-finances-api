@@ -23,8 +23,9 @@ export class Transaction {
     public errors: string[] = [],
   ) { }
 
-  async createTransaction(): Promise<void> {
-    await TransactionModel.create(this.transaction);
+  async createTransaction(): Promise<TransactionProps> {
+    const transaction = await TransactionModel.create(this.transaction);
+    return transaction;
   }
 
   static async deleteTransaction(transactionId: string): Promise<void> {

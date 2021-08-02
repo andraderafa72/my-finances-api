@@ -36,12 +36,12 @@ export class TransactionController {
       user: userId,
     });
 
-    await transactionModel.createTransaction();
+    const createdTransaction = await transactionModel.createTransaction();
     if (transactionModel.errors.length > 0) {
       return response.status(400).json(HandleError(transactionModel.errors));
     }
 
-    return response.json({ status: 'Created Successfully!', transaction: { ...transactionModel.transaction, createdAt: new Date() } });
+    return response.json({ status: 'Created Successfully!', transaction: createdTransaction });
   }
 
   async getWithdraws(request: RequestProps, response: Response) {

@@ -59,13 +59,14 @@ exports.TransactionController = void 0;
 var yup = __importStar(require("yup"));
 var Transaction_1 = require("../models/Transaction");
 var HandleError_1 = require("../errors/HandleError");
+var User_1 = require("../models/User");
 var TransactionController = /** @class */ (function () {
     function TransactionController() {
     }
     TransactionController.prototype.createTransaction = function (request, response) {
         var _a;
         return __awaiter(this, void 0, void 0, function () {
-            var _b, title, amount, category, type, userId, schema, error_1, transactionModel;
+            var _b, title, amount, category, type, userId, schema, error_1, transactionModel, createdTransaction;
             return __generator(this, function (_c) {
                 switch (_c.label) {
                     case 0:
@@ -100,11 +101,11 @@ var TransactionController = /** @class */ (function () {
                         });
                         return [4 /*yield*/, transactionModel.createTransaction()];
                     case 5:
-                        _c.sent();
+                        createdTransaction = _c.sent();
                         if (transactionModel.errors.length > 0) {
                             return [2 /*return*/, response.status(400).json(HandleError_1.HandleError(transactionModel.errors))];
                         }
-                        return [2 /*return*/, response.json({ status: 'Created Successfully!', transaction: transactionModel.transaction })];
+                        return [2 /*return*/, response.json({ status: 'Created Successfully!', transaction: createdTransaction })];
                 }
             });
         });
@@ -174,15 +175,27 @@ var TransactionController = /** @class */ (function () {
     };
     TransactionController.prototype.deleteTransaction = function (request, response) {
         return __awaiter(this, void 0, void 0, function () {
-            var id;
+            var id, user, error_2;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         id = request.params.id;
-                        return [4 /*yield*/, Transaction_1.Transaction.deleteTransaction(id)];
+                        _a.label = 1;
                     case 1:
+                        _a.trys.push([1, 4, , 5]);
+                        return [4 /*yield*/, User_1.UserModel.findOne({ email: request.user.email })];
+                    case 2:
+                        user = _a.sent();
+                        user.transactions.splice(user.transactions.indexOf(id), 1);
+                        user.save(function (e) { return console.log(e || ''); });
+                        return [4 /*yield*/, Transaction_1.Transaction.deleteTransaction(id)];
+                    case 3:
                         _a.sent();
                         return [2 /*return*/, response.json({ status: 'Deleted Successfully!' })];
+                    case 4:
+                        error_2 = _a.sent();
+                        return [2 /*return*/, response.status(400).json(HandleError_1.HandleError(error_2.errors))];
+                    case 5: return [2 /*return*/];
                 }
             });
         });
@@ -190,7 +203,7 @@ var TransactionController = /** @class */ (function () {
     TransactionController.prototype.updateTransaction = function (request, response) {
         var _a;
         return __awaiter(this, void 0, void 0, function () {
-            var _b, title, amount, category, type, id, userId, schema, error_2;
+            var _b, title, amount, category, type, id, userId, schema, error_3;
             return __generator(this, function (_c) {
                 switch (_c.label) {
                     case 0:
@@ -214,8 +227,8 @@ var TransactionController = /** @class */ (function () {
                         _c.sent();
                         return [3 /*break*/, 4];
                     case 3:
-                        error_2 = _c.sent();
-                        return [2 /*return*/, response.status(400).json(HandleError_1.HandleError(error_2.errors))];
+                        error_3 = _c.sent();
+                        return [2 /*return*/, response.status(400).json(HandleError_1.HandleError(error_3.errors))];
                     case 4: return [4 /*yield*/, Transaction_1.Transaction.updateTransaction(id, {
                             title: title,
                             amount: amount,
